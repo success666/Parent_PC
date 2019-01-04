@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script>
+        ;(function(doc, win) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                recalc = function() {
+                    var clientWidth = window.innerWidth && document.documentElement.clientWidth ? Math.min(window.innerWidth, document.documentElement.clientWidth) : window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+                    if(!clientWidth) return;
+                    docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+                    var div = document.createElement('div');
+                    div.style.width = '1.4rem';
+                    div.style.height = '0';
+                    document.body.appendChild(div);
+                    var ideal = 140 * clientWidth / 750;
+                    var rmd = (div.clientWidth / ideal);
+                    if(rmd > 1.2 || rmd < 0.8) {
+                        docEl.style.fontSize = 100 * (clientWidth / 750) / rmd + 'px';
+                    }
+                    document.body.removeChild(div);
+                };
+            if(!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            doc.addEventListener('DOMContentLoaded', recalc, false);
+        })(document, window);
+    </script>
+    <title>知识详情</title>
+    <style type="text/css">
+        #container {margin: 0.2rem}
+        #DetailTitle {
+            font-size: .35rem;
+            text-align: left;
+            padding-bottom: .2rem;
+            color: #333;
+            word-wrap: break-word;
+            font-weight: bold;}
+        #introduction {
+            margin: 0.2rem 0rem;
+            font-size: 0.25rem;
+            word-break: break-all;
+            color: #333;
+            text-indent: 2em;
+            text-align: left;
+            background: #eee;
+            padding: 0.2rem;}
+        #textContainer {padding: 0.03rem 0px; font-size: .25rem; height: 0.3rem; color: #666}
+        #leftStyle {float: left}
+        #rightStyle {float: right}
+        #text {font-size: 0.30rem; max-width: 100%; line-height: 0.5rem;word-wrap:break-word;word-break:break-all;overflow: hidden;}
+        #text p{font-size: 0.30rem; max-width: 100%; line-height: 0.5rem;word-wrap:break-word;word-break:break-all;overflow: hidden;}
+        img{
+            max-width: 100%;
+        }
+        #imgContainer {
+            padding: 0.6rem;
+            text-align: center;
+        }
+        #leftImg{
+            width: 0.8rem;
+            height: 0.8rem;
+            margin-right: 0.5rem;
+        }
+        #rightImg{
+            width: 0.8rem;
+            height: 0.8rem;
+            margin-left: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <p id="DetailTitle"></p>
+        <p id="textContainer">
+        <span id="leftStyle">类型：</span>
+        <span id="rightStyle">作者：</span>
+        </p>
+        <p id="introduction"></p>
+        <div id="text"></div>
+        <!--<div id="imgContainer">-->
+            <!--<img id="leftImg" src="../img/icon_klg_good_default@2x.png" onclick="good()">-->
+            <!--<img id="rightImg" src="../img/icon_klg_collect_default@2x.png" onclick="save()"/>-->
+        <!--</div>-->
+    </div>
+    <script>
+        function fun() {
+
+            if (undefined === window.knowledge) {
+                $('#container').html('<div id="text">获取数据失败！</div>');
+            } else {
+                var text = window.knowledge.getData();
+                var data = JSON.parse(text);
+
+                $('#DetailTitle').text(data.title);
+                $('#leftStyle').text('类型：' + (data.categoryName ? data.categoryName : ''));
+                $('#rightStyle').text('作者：' + (data.author ? data.author : ''));
+                $('#introduction').text('简介：'+ (data.introduction ? data.introduction : ''));
+                $('#text').html(data.content);
+
+                // $('#text').html(px2rem(data.content));
+                // $.ajax({
+                //     url: "http://s.parent.dev.xiaotitong.com/api/auth/v1/knowledge/${24}",
+                //     type: "GET",
+                //     headers: {
+                //         Accept: "application/json; charset=utf-8",
+                //         "Content-Type": "application/json",
+                //         Authorization:
+                //             "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ7XCJtZW51c1wiOltdLFwidXNlckFjY291bnRcIjpcIjEzNjg2MTM4MTUwXCIsXCJ1c2VySWRcIjo3LFwidXNlcm5hbWVcIjpcIlwifSIsImlzcyI6InlkbCIsImV4cCI6MTU2MTE4Mjc0MywianRpIjoiZDA0Y2VlMjEtYWI3NC00MjdlLThiODUtM2RhNmQxMmFmNTU2In0.23oSsUCG_2VMUPDMbaWAhsv0EZI_eRSUAQElV0k-jqc"
+                //     },
+                //         // info.token,
+                //     success: function (result) {
+                //         console.log(22222222222, result);
+                //         var data = result.data ? result.data : {};
+                //         $('#DetailTitle').text(data.title);
+                //         $('#leftStyle').text("类型：${data.categoryName ? data.categoryName : ''}");
+                //         $('#rightStyle').text("作者：${data.author}");
+                //         $('#introduction').text("简介：${data.introduction}");
+                //         var test = '<p>&nbsp; &nbsp; 相信大家再跑50米、100米、200米当中经常会有一个这样的疑问，为什么我的途中跑和冲刺跑都比被人要快，却在最终出来的成绩却没有别人快呢？<br/><br/></p><p>&nbsp; &nbsp; 相信这样的问题很多人都有，其实简单的说就是你不会起跑，因为上面我们提到的200米、100米和50米都属于短跑项目。这些项目多有一个共同特点,就是由开始到结束的时间很短，也就是二十几秒、十多秒甚至几秒就结束的事情，真的是相差毫秒却差之千里啊，所以这些项目的起跑都是十分重要的。<br/><br/></p><p>&nbsp; &nbsp; 下面就一起跟随小编一起去学习一下怎么让自己跑的更快的独门秘诀——蹲踞式起跑的技术动作。让你的短跑成绩更快，让你比风还快。</p><p style="text-align: center;"><img src="http://smartsport-root.oss-cn-shenzhen.aliyuncs.com/knowledge1dcdab87-fb9b-4f2e-b540-f7f9509ec994/t01a999b87c3c3d7eaf.jpg"/></p><p>&nbsp; &nbsp; 蹲踞式起跑：<br/><br/></p><p>&nbsp; &nbsp; 蹲踞式起跑包括&quot;各就位&quot;、&quot;预备&quot;、&quot;鸣枪&quot;(或&quot;跑&quot;的口令)三个环节。<br/><br/></p><p>&nbsp; &nbsp; 听到&quot;各就位&quot;口令后，走或跑到起跑器前，屈体，两手撑地，有力腿在前，两脚依次蹬在起跑器的抵足板上，(以普通式为例)前脚距起跑线一脚至一脚半。后脚距前脚一脚至一脚半，两个脚中轴线间隔约15厘米(约一拳半)，后腿跪地;前抵足板与地面大约成45度角，后抵足板与地面成大约65度角。两手收回紧靠起跑线后沿并掌于地面，两手拇指相对，其余四指并拢或稍分开与拇指成&quot;八字形&quot;，虎口向前做弹性支撑。两手距离比肩稍宽，两臂伸直，肩微移超过起跑线;头与躯干保持在一条直线上，颈部自然放松，两眼视前方半米处，身体重量均衡地落在两手、前脚和后膝关节之间，注意听&quot;预备&quot;口令。</p><p style="text-align: center;"><img src="http://smartsport-root.oss-cn-shenzhen.aliyuncs.com/knowledge2dfdeb51-167e-4ce3-aeed-ce8e949923d9/2012092610417262.jpg"/></p><p>&nbsp; &nbsp; 听到&quot;预备&quot;口令后，运动员可深吸一口气，然后抬起臀部，身体重心同时前移，形成臀部高于肩、肩超过起跑线的身体姿势。此时体重主要由两臂和前脚支撑。前腿大小腿夹角约为90度左右，后腿小腿夹角约为120度左右。两脚脚掌紧贴起跑器抵足板，全神贯注，静听枪声准备起跑。<br/><br/></p><p>&nbsp; &nbsp; 听到枪声或&quot;跑&quot;的口令后，两手迅速推离地面，两臂屈肘做有力的前后摆动，同时两腿迅速蹬起跑器。后腿蹬离起跑器后，以膝领先向前摆出，而前腿要快速有力地蹬伸髋、膝、踝3关节，把身体向前上方有力地送出。此时，前腿的后蹬角度约为42度至45度，上体前倾于地面约成15度至20度角。接着迅速发力冲刺。</p><p style="text-align: center;"><img src="http://smartsport-root.oss-cn-shenzhen.aliyuncs.com/knowledge271cfc0f-c2cc-4926-89c3-1ad9de49d229/001PA10Ezy6I5PTiNvZ43&690.jpg"/></p>'
+                //         $('#text').html(px2rem(test));
+                //     }
+                // });
+            }
+        }
+        fun();
+        // function good() {
+        //     this.isGood = !this.isGood;
+        //     if (this.isGood) {
+        //         $('#leftImg').attr('src', "../img/icon_klg_good_pressed@2x.png");
+        //     } else {
+        //         $('#leftImg').attr('src', "../img/icon_klg_good_default@2x.png");
+        //     }
+        // }
+        // function save() {
+        //     this.isSave = !this.isSave;
+        //     if (this.isSave) {
+        //         $('#rightImg').attr('src', "../img/icon_klg_collect_default@2x.png");
+        //     } else {
+        //         $('#rightImg').attr('src', "../img/icon_klg_collect_pressed@2x.png");
+        //     }
+        // }
+        // function px2rem(str = '') {
+        //     var content = str;
+        //     var pxArr = content.match(/font-size: \d+px;/g) || [];
+        //     var zoom = 1.6;
+        //     for (var ind = 0; ind < pxArr.length; ind++ ) {
+        //         var item = pxArr[ind];
+        //         var px = item.match(/font-size: (\d+)px;/)[1];
+        //         var rem = px * zoom / 100;
+        //         console.log(px);
+        //         pxArr[ind] = item.replace("${px}px", "${rem}rem");
+        //         content = content.replace("${px}px", "${rem}rem");
+        //     }
+        //     return content;
+        // }
+
+    </script>
+</body>
+</html>

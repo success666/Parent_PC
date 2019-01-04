@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <script src="http://libs.baidu.com/jquery/2.1.1/jquery.min.js"></script>
+  <title>运动日记</title>
+  <script type="text/javascript">
+      ;(function(doc, win) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                recalc = function() {
+                    var clientWidth = window.innerWidth && document.documentElement.clientWidth ? Math.min(window.innerWidth, document.documentElement.clientWidth) : window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+                    if(!clientWidth) return;
+                    docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+                    var div = document.createElement('div');
+                    div.style.width = '1.4rem';
+                    div.style.height = '0';
+                    document.body.appendChild(div);
+                    var ideal = 140 * clientWidth / 750;
+                    var rmd = (div.clientWidth / ideal);
+                    if(rmd > 1.2 || rmd < 0.8) {
+                        docEl.style.fontSize = 100 * (clientWidth / 750) / rmd + 'px';
+                    }
+                    document.body.removeChild(div);
+                };
+            if(!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            doc.addEventListener('DOMContentLoaded', recalc, false);
+        })(document, window);
+  </script>
+</head>
+<style>
+@media screen and (max-device-width:40000px){
+    *{padding:0;margin:0;box-sizing: border-box;}
+    #container{
+        padding:0 0px 20px 0px;
+        width: 450px;
+        margin:0 auto;
+        display: none;
+        padding-bottom: 20px;
+        font-size: 18px;
+    }
+    #container .logo{
+        padding:40px 0 20px 0;
+        width: 172px;
+        margin: 0 auto;
+    }
+    #container .logo img{
+        height: 130px;
+        width: 172px;
+    }
+    #container .text{
+        font-size: 18px;
+        text-indent:2em;
+    }
+    #container .manifesto{
+        font-size: 18px;
+        padding:20px 0 20px 0px;
+    }
+    #container .footlogo{
+        width: 222px;
+        margin: 0 auto;
+    }
+    #container .footlogo img{
+        width: 222px;
+        height: 222px;
+    }
+    #container .manifestoimg{
+        margin-top:20px;
+        height: 40px;
+        width: 136px;
+    }
+    #container .headportrait{
+        position: relative;
+        padding:20px 0 20px 0px;
+        width: 100px;
+        height: 140px;
+        margin: 0 auto;
+    }
+    #container .headportrait img.headlogo{
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+    }
+    #container .headportrait img.decorate{
+        position: absolute;
+        width: 118px;
+        top:80px;
+        left: -10px;
+       
+    }
+    #container .picture img{
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    #error{
+        text-align: center;
+        font-size: 18px;
+    }
+}
+@media screen and (max-device-width:640px){
+    *{padding:0;margin: 0;box-sizing: border-box;}
+    #container{
+        padding:0 0.13333333333333333rem 0.26666666666666666rem 0.13333333333333333rem;
+        font-size: medium;
+        width: 100%;
+        display: none;
+    }
+    #container .logo{
+        padding:0.7466666666666667rem 0 0.26666666666666666rem 0;
+        width: 2.2933333333333334rem;
+        margin: 0 auto;
+    }
+    #container .logo img{
+        height: 1.7333333333333334rem;
+        width: 2.2933333333333334rem;
+    }
+    #container .text{
+        font-size: 0.37333333333333335rem;
+        text-indent:2em;
+    }
+    #container .manifesto{
+        font-size: 0.37333333333333335rem;
+    }
+    #container .footlogo{
+        width: 2.96rem;
+        margin: 0 auto;
+    }
+    #container .footlogo img{
+        width: 2.96rem;
+        height: 2.96rem;
+    }
+    #container .manifestoimg{
+        margin-top:0.26666666666666666rem;
+        height: 0.5333333333333333rem;
+        width: 1.8133333333333332rem;
+    }
+    #container .headportrait{
+        position: relative;
+        padding:0.26666666666666666rem 0 0.26666666666666666rem 0rem;
+        width: 2.16rem;
+        height: 2.6933333333333334rem;
+        margin: 0 auto;
+    }
+    #container .headportrait img.headlogo{
+        border-radius: 50%;
+        width: 2.16rem;
+        height: 2.16rem;
+    }
+    #container .headportrait img.decorate{
+        position: absolute;
+        width: 2.6666666666666665rem;
+        top:1.44rem;
+        left: -0.26666666666666666rem;
+    }
+ 
+    #container .picture img{
+        width: 100%;
+        margin-bottom: 0.13333333333333333rem;
+    }
+    #error{
+        text-align: center;
+        font-size: 0.37333333333333335rem;
+    }
+}
+ 
+    
+</style>
+<body>
+	<div id="container">
+        <p class="logo">
+            <img src="../img/ctv_img_dirly@3x.png" alt="">
+        </p>
+
+        <p class="text">
+        </p>
+
+        <p class="headportrait">
+            
+        </p>
+
+        <img class="manifestoimg" src="../img/ctv_img_hero_bgd2@2x.png" alt="">
+
+        <p class="manifesto">
+        </p>    
+
+        <p class="picture">
+        </p>
+
+        <p class="footlogo">
+            <img src="../img/分享的校体通二维码.jpg" alt="">
+        </p>
+    </div>
+
+    <div id="error">
+    </div>
+</body>
+
+<script>
+    // console.log(location.href);
+    // 参数
+    var num = location.href.indexOf('?');
+    var hrefData = location.href.slice(num*1+1).split('&');
+    var params = {}
+    for(var is=1;is<=hrefData.length;is++){
+        var obj = hrefData[is-1].split('=')
+        params[obj[0]] = obj[1];
+    }
+    // console.log(params);
+    // http://yapi.xiaotitong.com/mock/41/api/v1/auth/recommendGuidanceProgramme/shareSportRecord
+    // http://s.parent.dev.xiaotitong.com/api/v1/auth/recommendGuidanceProgramme/shareSportRecord
+
+	$.get("http://s.parent.dev.xiaotitong.com/api/v1/auth/recommendGuidanceProgramme/shareSportRecord", params, function(result){
+        if(result.status.code == '0'){
+            $('#container').css({display:'block'});
+            var diaryData = result.data;
+            
+            // 时间
+            var s = parseInt(diaryData.sportTime%60);
+            var m = parseInt(diaryData.sportTime/60);
+            var h = parseInt(diaryData.sportTime/3600);
+            var d = parseInt(diaryData.sportTime/86400);
+            var timeData = d!=0?d+'天':'';
+            timeData += h!=0?h%24+'小时':'';
+            timeData +=  m!=0?m%60+'分':'';
+            timeData += s+'秒';
+            
+            // 百分数
+            var percentage = (diaryData.beatStudentvalue*100).toFixed(0);
+
+            // 内容
+            $('.text').html(`${diaryData.name || ''}于${diaryData.createDate || ''}用${timeData || ''}时间，完成了${diaryData.guidancePointNameList?diaryData.guidancePointNameList[0].guidancePointName : ''}、${diaryData.guidancePointNameList?diaryData.guidancePointNameList[1].guidancePointName : ''}、${diaryData.guidancePointNameList?diaryData.guidancePointNameList[2].guidancePointName : ''}的锻炼。打败了${percentage || ''}%的小伙伴`)
+            
+            // 头像
+            $('.headportrait').html(`<img class="headlogo" src="${diaryData.logo || ''}" alt=""><img class="decorate" src="../img/ctv_img_gold@2x.png" alt="">`)
+
+            // 宣言
+            $('.manifesto').html(diaryData.heroDeclaration || '')
+
+            // 图片
+            var imgContent = '';
+            if(diaryData.heroPics){
+                var arrImg = diaryData.heroPics.split(',')
+                for(var i=1;i<=arrImg.length;i++){
+                    imgContent += `<img src="${arrImg[i-1]}" alt="">`
+                }
+            }
+            $('.picture').html(imgContent || '')
+
+        }else{
+            $('#error').html('获取数据失败!')
+        }
+        
+
+    });
+
+   
+</script>
+</html>

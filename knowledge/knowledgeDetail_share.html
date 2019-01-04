@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>知识点详情分享页</title>
+    <style type="text/css">
+        #container {
+            margin: 0.2rem
+        }
+
+        #DetailTitle {
+            font-size: .35rem;
+            text-align: left;
+            padding-bottom: .2rem;
+            color: #333;
+            word-wrap: break-word;
+            font-weight: bold;
+        }
+
+        #introduction {
+            margin: 0.2rem 0rem;
+            font-size: 0.25rem;
+            word-break: break-all;
+            color: #333;
+            text-indent: 2em;
+            text-align: left;
+            background: #eee;
+            padding: 0.2rem;
+        }
+
+        #textContainer {
+            padding: 0.03rem 0px;
+            font-size: .25rem;
+            height: 0.3rem;
+            color: #666
+        }
+
+        #leftStyle {
+            float: left
+        }
+
+        #rightStyle {
+            float: right
+        }
+
+        #text,
+        .content-hide {
+            font-size: 0.30rem;
+            max-width: 100%;
+            line-height: 0.5rem
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        #videoStyle {
+            max-width: 100%;
+            height: 5rem;
+            display: none;
+        }
+        .weixin{
+            /*display: none;*/
+            font-size: 0.25rem;
+        }
+    </style>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
+<script>
+    function getData() {
+        var reg = new RegExp("(^|&)id=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        var id = "";
+        if (r != null) {
+            id = unescape(r[2]);
+        } else {
+            id = null;
+        }
+        var apiHref = window.location.origin;
+        var api = "";
+        if (apiHref.indexOf("dev") >= 0) {
+            api = "http://s.parent.dev.xiaotitong.com"
+        }
+        if (apiHref == "http://m.par.sit.xiaotitong.com") {
+            api = "http://s.par.sit.xiaotitong.com"
+        }
+        if (apiHref == "https://mpar.xiaotitong.com") {
+            api = "https://spar.xiaotitong.com"
+        }
+        if (apiHref == "http://m.par.pet.xiaotitong.com") {
+            api = "http://s.par.pet.xiaotitong.com"
+        }
+        if (apiHref == "https://m.par.pet.xiaotitong.com") {
+            api = "http://s.par.pet.xiaotitong.com"
+        }
+        $.ajax({
+            url: api + `/api/auth/v1/knowledge/` + id,
+            type: "GET",
+            headers: {
+                Accept: "application/json; charset=utf-8",
+                "Content-Type": "application/json",
+                Authorization: ""
+            },
+            success: function (result) {
+
+                var data = result.data ? result.data : {};
+                if (data == null || JSON.stringify(data) == "{}") {
+                    $('.content-show').hide();
+                    $('.content-hide').show();
+                    $('.content-hide').text('无访问权限！');
+                    return
+                }
+                var contentType = data.contentType;
+                var videoUrl = data.videoUrl;
+                var title = data.title;
+                var categoryName = data.categoryName;
+                var author = data.author;
+                var introduction = data.introduction;
+                var content = data.content || "";
+                var pxArr = content.match(/font-size: \d+px;/g) || [];
+                var zoom = 1.6;
+                for (var ind = 0; ind < pxArr.length; ind++) {
+                    var item = pxArr[ind];
+                    var px = item.match(/font-size: (\d+)px;/)[1];
+                    var rem = px * zoom / 100;
+                    pxArr[ind] = item.replace(px + 'px', rem + 'rem');
+                    content = content.replace(px + 'px', rem + 'rem');
+                }
+                if (contentType == 1) {
+                    $('#videoStyle').show();
+                    $('#videoStyle').attr('src', videoUrl)
+                } else {
+                    $('#videoStyle').hide();
+                }
+                $('#DetailTitle').text(title);
+                $('#leftStyle>span').text(categoryName);
+                $('#rightStyle>span').text(author);
+                $('#introduction>span').text(introduction);
+                $('#text').html(content);
+            }
+        });
+    }
+    $(document).ready(function () {
+        getData()
+    })
+    ;
+    (function (doc, win) {
+        var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function () {
+                var clientWidth = window.innerWidth && document.documentElement.clientWidth ? Math.min(window.innerWidth,
+                    document.documentElement.clientWidth) : window.innerWidth || document.documentElement.clientWidth ||
+                    document.getElementsByTagName('body')[0].clientWidth;
+                if (!clientWidth) return;
+                docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+                var div = document.createElement('div');
+                div.style.width = '1.4rem';
+                div.style.height = '0';
+                document.body.appendChild(div);
+                var ideal = 140 * clientWidth / 750;
+                var rmd = (div.clientWidth / ideal);
+                if (rmd > 1.2 || rmd < 0.8) {
+                    docEl.style.fontSize = 100 * (clientWidth / 750) / rmd + 'px';
+                }
+                document.body.removeChild(div);
+            };
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+    })(document, window);
+</script>
+</head>
+
+<body>
+<div id="container">
+    <div class="content-show">
+        <video id="videoStyle" controls="controls"></video>
+        <p id="DetailTitle"></p>
+        <p id="textContainer">
+            <span id="leftStyle">类型：<span></span></span>
+            <span id="rightStyle">作者：<span></span></span>
+        </p>
+        <p id="introduction">简介：<span></span></p>
+        <div id="text"></div>
+    </div>
+    <div class="content-hide"></div>
+</div>
+
+</body>
+
+</html>
